@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suno Music AI</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  background:#0f172a;
+  color:white;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+.header{
+  background:linear-gradient(135deg,#1877f2,#4ea1ff);
+  padding:35px 20px 90px;
+  border-bottom-left-radius:40px;
+  border-bottom-right-radius:40px;
+  position:relative;
+  overflow:hidden;
+}
+
+.header::before{
+  content:'';
+  position:absolute;
+  width:200%;
+  height:120px;
+  background:rgba(255,255,255,0.18);
+  bottom:-40px;
+  left:-50%;
+  border-radius:45%;
+  animation:wave 8s linear infinite;
+}
+
+.header::after{
+  content:'';
+  position:absolute;
+  width:200%;
+  height:140px;
+  background:rgba(255,255,255,0.25);
+  bottom:-55px;
+  left:-50%;
+  border-radius:40%;
+  animation:wave 12s linear infinite reverse;
+}
+
+@keyframes wave{
+  0%{
+    transform:translateX(0);
+  }
+  100%{
+    transform:translateX(-25%);
+  }
+}
+
+.logo{
+  font-size:30px;
+  font-weight:700;
+  position:relative;
+  z-index:2;
+}
+
+.sub{
+  color:#eaf3ff;
+  margin-top:10px;
+  line-height:1.7;
+  position:relative;
+  z-index:2;
+}
+
+.content{
+  padding:20px;
+  margin-top:-50px;
+  padding-bottom:120px;
+}
+
+.card{
+  background:#111827;
+  border-radius:28px;
+  padding:20px;
+  margin-bottom:20px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.25);
+}
+
+.title{
+  color:#3b82f6;
+  font-size:28px;
+  font-weight:700;
+  margin-bottom:10px;
+}
+
+.desc{
+  color:#cbd5e1;
+  line-height:1.8;
+}
+
+.label{
+  margin-top:18px;
+  margin-bottom:10px;
+  color:#60a5fa;
+  font-weight:600;
+}
+
+input,
+textarea,
+select{
+  width:100%;
+  border:none;
+  outline:none;
+  background:#1e293b;
+  color:white;
+  padding:16px;
+  border-radius:18px;
+  margin-bottom:14px;
+  font-size:14px;
+}
+
+textarea{
+  resize:none;
+  min-height:120px;
+}
+
+.row{
+  display:flex;
+  gap:10px;
+}
+
+.gender-btn{
+  flex:1;
+  border:none;
+  padding:15px;
+  border-radius:18px;
+  background:#1e293b;
+  color:white;
+  font-weight:600;
+}
+
+.gender-btn.active{
+  background:#1877f2;
+}
+
+.generate{
+  width:100%;
+  border:none;
+  padding:18px;
+  border-radius:22px;
+  background:linear-gradient(135deg,#1877f2,#4ea1ff);
+  color:white;
+  font-size:16px;
+  font-weight:700;
+  margin-top:10px;
+}
+
+.result{
+  background:#020617;
+  color:#4ade80;
+  padding:15px;
+  border-radius:18px;
+  margin-top:20px;
+  overflow:auto;
+  font-size:12px;
+}
+
+.save-btn{
+  width:100%;
+  border:none;
+  padding:16px;
+  border-radius:18px;
+  background:#1877f2;
+  color:white;
+  font-weight:700;
+}
+
+.tutorial{
+  background:#1e293b;
+  padding:16px;
+  border-radius:18px;
+  line-height:1.8;
+  color:#cbd5e1;
+}
+
+.nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  background:#111827;
+  display:flex;
+  justify-content:space-around;
+  padding:14px 0;
+  border-top-left-radius:25px;
+  border-top-right-radius:25px;
+  box-shadow:0 -5px 25px rgba(0,0,0,0.3);
+}
+
+.nav-item{
+  text-align:center;
+  color:#94a3b8;
+  font-size:13px;
+}
+
+.nav-item.active{
+  color:#3b82f6;
+}
+
+.icon{
+  font-size:24px;
+  margin-bottom:5px;
+}
+
+.hidden{
+  display:none;
+}
+
+.loading{
+  text-align:center;
+  margin-top:20px;
+  color:#60a5fa;
+}
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">🎵 Suno Music AI</div>
+
+  <div class="sub">
+    Create your own AI music with beautiful vocals and custom lyrics.
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- HOME -->
+  <div id="homePage">
+
+    <div class="card">
+      <div class="title">Welcome 👋</div>
+
+      <div class="desc">
+        Selamat datang di Suno Music Generator.<br><br>
+
+        Buat lagu AI sendiri dengan:
+        <br><br>
+
+        • Lirik custom<br>
+        • Female / Male vocal<br>
+        • Banyak model Suno AI<br>
+        • Style musik bebas<br>
+        • Generate langsung dari HP 😎
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="title">Features 🚀</div>
+
+      <div class="desc">
+        ✅ Generate Music<br>
+        ✅ Save API Key<br>
+        ✅ Mobile Friendly<br>
+        ✅ Vercel Ready<br>
+        ✅ GitHub Ready<br>
+        ✅ Single File HTML
+      </div>
+    </div>
+
+  </div>
+
+  <!-- GENERATE -->
+  <div id="generatePage" class="hidden">
+
+    <div class="card">
+
+      <div class="title">Generate Music</div>
+
+      <div class="label">Judul Lagu</div>
+      <input type="text" id="title" placeholder="Masukkan judul lagu">
+
+      <div class="label">Style Musik</div>
+      <textarea id="style" placeholder="Reggae rap hip-hop, emotional female vocals..."></textarea>
+
+      <div class="label">Lirik Lagu</div>
+      <textarea id="lyrics" placeholder="Masukkan lirik lagu..."></textarea>
+
+      <div class="label">Pilihan Vocal</div>
+
+      <div class="row">
+
+        <button class="gender-btn" id="maleBtn" onclick="setGender('m')">
+          Male
+        </button>
+
+        <button class="gender-btn active" id="femaleBtn" onclick="setGender('f')">
+          Female
+        </button>
+
+      </div>
+
+      <div class="label">Model AI</div>
+
+      <select id="model">
+        <option value="V5_5">V5.5</option>
+        <option value="V5">V5</option>
+        <option value="V4_5PLUS">V4.5+</option>
+        <option value="V4_5">V4.5</option>
+        <option value="V4">V4</option>
+        <option value="V4_5ALL">V4.5ALL</option>
+      </select>
+
+      <button class="generate" onclick="generateMusic()">
+        GENERATE MUSIC
+      </button>
+
+      <div class="loading" id="loading"></div>
+
+      <div class="result" id="result">
+Waiting response...
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- SETTINGS -->
+  <div id="settingsPage" class="hidden">
+
+    <div class="card">
+
+      <div class="title">Pengaturan API</div>
+
+      <input type="password" id="apikey" placeholder="Masukkan API Key Suno">
+
+      <button class="save-btn" onclick="saveApiKey()">
+        SAVE API KEY
+      </button>
+
+      <div class="label">Tutorial Ambil API Key</div>
+
+      <div class="tutorial">
+        1. Login ke Suno API<br>
+        2. Buka menu API Key<br>
+        3. Copy API Key kamu<br>
+        4. Paste ke website ini<br>
+        5. Klik Save API Key
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- NAVBAR -->
+
+<div class="nav">
+
+  <div class="nav-item active" id="homeNav" onclick="showPage('home')">
+    <div class="icon">🏠</div>
+    Home
+  </div>
+
+  <div class="nav-item" id="generateNav" onclick="showPage('generate')">
+    <div class="icon">🎵</div>
+    Generate
+  </div>
+
+  <div class="nav-item" id="settingsNav" onclick="showPage('settings')">
+    <div class="icon">⚙️</div>
+    Settings
+  </div>
+
+</div>
+
+<script>
+
+let vocalGender = 'f';
+
+function setGender(type){
+
+  vocalGender = type;
+
+  document.getElementById('maleBtn').classList.remove('active');
+  document.getElementById('femaleBtn').classList.remove('active');
+
+  if(type === 'm'){
+    document.getElementById('maleBtn').classList.add('active');
+  }else{
+    document.getElementById('femaleBtn').classList.add('active');
+  }
+
+}
+
+function showPage(page){
+
+  document.getElementById('homePage').classList.add('hidden');
+  document.getElementById('generatePage').classList.add('hidden');
+  document.getElementById('settingsPage').classList.add('hidden');
+
+  document.getElementById('homeNav').classList.remove('active');
+  document.getElementById('generateNav').classList.remove('active');
+  document.getElementById('settingsNav').classList.remove('active');
+
+  if(page === 'home'){
+    document.getElementById('homePage').classList.remove('hidden');
+    document.getElementById('homeNav').classList.add('active');
+  }
+
+  if(page === 'generate'){
+    document.getElementById('generatePage').classList.remove('hidden');
+    document.getElementById('generateNav').classList.add('active');
+  }
+
+  if(page === 'settings'){
+    document.getElementById('settingsPage').classList.remove('hidden');
+    document.getElementById('settingsNav').classList.add('active');
+  }
+
+}
+
+function saveApiKey(){
+
+  const key = document.getElementById('apikey').value;
+
+  localStorage.setItem('suno_api_key',key);
+
+  alert('API Key Saved');
+
+}
+
+async function generateMusic(){
+
+  const apiKey = localStorage.getItem('suno_api_key');
+
+  if(!apiKey){
+    alert('Masukkan API Key dulu');
+    showPage('settings');
+    return;
+  }
+
+  const title = document.getElementById('title').value;
+  const style = document.getElementById('style').value;
+  const lyrics = document.getElementById('lyrics').value;
+  const model = document.getElementById('model').value;
+
+  document.getElementById('loading').innerText =
+    'Generating music...';
+
+  document.getElementById('result').innerText =
+    'Please wait...';
+
+  try{
+
+    const response = await fetch(
+      'https://api.sunoapi.org/api/v1/generate',
+      {
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json',
+          'Authorization':'Bearer ' + apiKey
+        },
+        body:JSON.stringify({
+          title:title,
+          style:style,
+          prompt:lyrics,
+          customMode:true,
+          instrumental:false,
+          model:model,
+          vocalGender:vocalGender,
+          callBackUrl:'https://example.com/callback'
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    document.getElementById('loading').innerText =
+      'Generate Complete ✅';
+
+    document.getElementById('result').innerText =
+      JSON.stringify(data,null,2);
+
+  }catch(err){
+
+    document.getElementById('loading').innerText =
+      'Generate Failed ❌';
+
+    document.getElementById('result').innerText =
+      err;
+
+  }
+
+}
+
+</script>
+
+</body>
+</html>
